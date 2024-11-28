@@ -6,5 +6,5 @@ import (
 
 func main() {
 	println("Compilando o Server...")
-	
+	system.RunServer()
 }
