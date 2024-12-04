@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,22 +49,26 @@ func UpdateToDo(ctx *gin.Context) {
 	ctx.IndentedJSON(404, "Não realizado")
 }
 
-func removeAtIndex(slice []ToDo, index int) []ToDo {
-	if index < 0 || index >= len(slice) {
-		return slice // Retorna o slice original se o índice for inválido
-	}
-	return append(slice[:index], slice[index+1:]...)
-}
-
 // Concertar o método de removeIndex
 func DeleteToDo(ctx *gin.Context) {
 	var target_id, _ = strconv.Atoi(ctx.Param("id"))
 	for i, item := range depot {
 		if item.Id == target_id {
-			removeAtIndex(depot, i)
-			ctx.IndentedJSON(200, "ok")
+			log.Print(item, i)
+			depot = _RemoveByIndex(depot, i)
+			ctx.IndentedJSON(200, "Elemento removido")
 			return
 		}
 	}
 	ctx.IndentedJSON(404, "Não efetuado")
+}
+
+func _RemoveByIndex(box []ToDo, index int) []ToDo {
+	var tempArray = []ToDo{}
+	for i, value := range box{
+		if i != index {
+			tempArray = append(tempArray, value)
+		}
+	} 
+	return tempArray
 }
